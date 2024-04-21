@@ -1,0 +1,3 @@
+export const ENDPOINT = "https://store.istad.co"
+
+export   const Token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0NTQ0MjA5LCJpYXQiOjE3MTIzODQyMDksImp0aSI6IjNiOTE1NTg2NjJjYTQwMzhiNmI1MzNhYzI1MjZiMjZhIiwidXNlcl9pZCI6Njd9.UEBo0vwYqsvHts7kCKBy1s4Hzxq50RFQ1JqlR5J0SN0"
