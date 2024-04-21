@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import style from "./style.module.css";
 import { useState } from "react";
-import { ENDPOINT, Token } from "@/app/library/constants";
+import { BASE_URL, ACCESS_TOKEN } from "@/lib/constants";
 
 type CatageoryType = {
 	name: string;
@@ -82,10 +82,10 @@ export default function Product() {
 		formData.append("name", name);
 		formData.append("image", file);
 
-		const rest = await fetch(`${ENDPOINT}/api/file/${typeFile}/`, {
+		const rest = await fetch(`${BASE_URL}/api/file/${typeFile}/`, {
 			method: "POST",
 			headers: {
-				Authorization: `Bearer ${Token}`,
+				Authorization: `Bearer ${ACCESS_TOKEN}`,
 			},
 			body: formData,
 		});
@@ -95,11 +95,11 @@ export default function Product() {
 	};
 
 	const handleSubmitProudct = async (value: ProductPostType) => {
-		const res = await fetch(`${ENDPOINT}/api/products/`, {
+		const res = await fetch(`${BASE_URL}/api/products/`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: `Bearer ${Token}`,
+				Authorization: `Bearer ${ACCESS_TOKEN}`,
 			},
 			body: JSON.stringify(value),
 		});
@@ -124,7 +124,7 @@ export default function Product() {
 						"category"
 					);
 
-					// upload 
+					// upload file product
 					const fileProduct = values.fileProduct;
 					const productImage = await handleUploadeIcon(
 						fileProduct,
@@ -132,7 +132,7 @@ export default function Product() {
 						"product"
 					);
 					
-					// create 
+					// create product post
                     const productPost: ProductPostType = {
                         category: {
                             name: values.categoryName,
@@ -145,7 +145,7 @@ export default function Product() {
                         quantity: values.quantity,
                     }
 
-                    // post 
+                    // post product
                     handleSubmitProudct(productPost)
 				}}
 			>
@@ -170,7 +170,7 @@ export default function Product() {
 							/>
 						</div>
 
-						{/*  Description */}
+						{/* Product Description */}
 						<div className="mb-5">
 							<label className={`${style.label}`} htmlFor="desc">
 								Product Description
@@ -207,7 +207,7 @@ export default function Product() {
 							/>
 						</div>
 
-						{/* Quantity */}
+						{/* Product Quantity */}
 						<div className="mb-5">
 							<label className={`${style.label}`} htmlFor="price">
 								Product Quantity
@@ -225,7 +225,7 @@ export default function Product() {
 							/>
 						</div>
 
-						{/* Category */}
+						{/* Product Category */}
 						<div className="mb-5">
 							<label className={`${style.label}`} htmlFor="categoryName">
 								Product Category Name
@@ -243,7 +243,7 @@ export default function Product() {
 							/>
 						</div>
 
-						{/*  Category Icon*/}
+						{/* Product Category Icon*/}
 						<div className="mb-5">
 							<label className={`${style.label}`} htmlFor="categoryIcon">
 								Product Category Icon
@@ -263,7 +263,7 @@ export default function Product() {
 							/>
 						</div>
 
-						{/* Image*/}
+						{/* Product Image*/}
 						<div className="mb-5">
 							<label className={`${style.label}`} htmlFor="fileProduct">
 								Product Image
@@ -283,9 +283,9 @@ export default function Product() {
 							/>
 						</div>
 
-						{/*  submit */}
+						{/* button submit */}
 						<button type="submit" className={`${style.button}`}>
-							Send
+							Submit
 						</button>
 					</Form>
 				)}

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "@/redux/store";
-import { BASE_URL, ACCESS_TOKEN } from "@/lib/constants";
+import { ENDPONT, ACCESS_TOKEN } from "@/lib/constants";
 
 // Define a type for the user profile
 
@@ -27,7 +27,7 @@ const initialState: initialStateType = {
 
 // create asyn thunk
 export const fetchUserProfile = createAsyncThunk("userProfile/fetchUserProfile", async () => {
-    const response = await fetch(`${BASE_URL}/api/user/profile/`,{
+    const response = await fetch(`${ENDPONT}/api/user/profile/`,{
         headers: {
             Authorization: `Bearer ${ACCESS_TOKEN}`
         }

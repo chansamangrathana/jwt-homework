@@ -1,151 +1,130 @@
 "use client";
-import { ProductT } from "@/app/library/definitions";
+import { ProductType } from "@/lib/definitions";
 import { useEffect, useState } from "react";
-import { Button, Modal } from "flowbite-react";
 import DataTable, { TableColumn } from "react-data-table-component";
+import { Button, Modal } from "flowbite-react";
+import Image from "next/image";
 
 export default function Dashboard() {
-  const [products, setProducts] = useState<ProductT[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [openModal, setOpenModal] = useState(false);
-  const [productDetail, setProductDetail] = useState<ProductT | null>(null);
-  const ImagePlaceHolder="https://imgs.search.brave.com/Bnih5OaEx311pSibhBdL7BVSCg0rs96EYZHLu3IaKr0/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9kZXZl/bG9wZXJzLmVsZW1l/bnRvci5jb20vZG9j/cy9hc3NldHMvaW1n/L2VsZW1lbnRvci1w/bGFjZWhvbGRlci1p/bWFnZS5wbmc"
-  const Token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0NTQ0MjA5LCJpYXQiOjE3MTIzODQyMDksImp0aSI6IjNiOTE1NTg2NjJjYTQwMzhiNmI1MzNhYzI1MjZiMjZhIiwidXNlcl9pZCI6Njd9.UEBo0vwYqsvHts7kCKBy1s4Hzxq50RFQ1JqlR5J0SN0"
-  const ENDPOINT = "https://store.istad.co/api/products/";
+	const [products, setProducts] = useState<ProductType[]>([]);
+	const [loading, setLoading] = useState<boolean>(false);
+	const [openModal, setOpenModal] = useState(false);
+	const [productDetail, setProductDetail] = useState<ProductType | null>(null);
+	// fetch products
+	useEffect(() => {
+		setLoading(true);
+		fetch("https://fakestoreapi.com/products")
+			.then((res) => res.json())
+			.then((data) => {
+				setProducts(data);
+				setLoading(false);
+			})
+			.catch((err) => {
+				console.error(err);
+				setLoading(false);
+			});
+	}, []);
 
+	const [imagePlaceholder, setImagePlaceholder] = useState<string>(
+		"https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png"
+	);
 
-  useEffect(() => {
-    setLoading(true);
-    fetch("https://store.istad.co/api/products/")
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data.results);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, []);
+	const handleViewProduct = (product: ProductType) => {
+		setProductDetail(product);
+		setOpenModal(true);
+	};
 
-  const handleViewProduct = (products: ProductT) => {
-    setProductDetail(products);
-    setOpenModal(true);
-  };
-  // const handleDelete=(product:ProductT)=>{
-  //   const id=product.id
-  //   setLoading(true)
-  //   fetch(`${ENDPOINT}/api/products/${id}/`,{
-  //     method:'DELETE',
-  //     headers:{
-  //       'Content-Type':'application/json', 
-  //        'Authorization':`Bearer ${Token}`
-  //     }})
-  // }
-  // const handleEdit=(product:ProductT)=>{
-  //   const id=product.id
-  //   setLoading(true)
-  //   fetch(`${ENDPOINT}/api/products/${id}/`,{
-  //     method:'PUT',
-  //     headers:{
-  //       'Content-Type':'application/json', 
-  //        'Authorization':`Bearer ${Token}`,
-  // }}).then(res=>res.json())
-  //    .then((data)=>setProducts(data))
-  //    .catch(err=>console.log(err))
-  // }
-  
-  const columns: TableColumn<ProductT>[] = [
-    {
-      name: "Name Product",
-      selector: (row) => row.name,
-    },
-    {
-      name: "Price (USD)",
-      selector: (row) => row.price,
-    },
-    {
-      name: "Image",
-      selector: (row): any => (
-        <img className="w-11" src={row.image} alt={row.image} />
-      ),
-    },
-    {
-      name: "Category",
-      selector: (row) => row.category,
-    },
-    {
-      name: "Action",
-      selector: (row): any => (
-        <div>
-          <button
-            onClick={() => {
-              handleViewProduct(row);
-            }}
-            className="text-white mx-2  bg-purple-700 p-3 rounded-2xl"
-          >
-            view
-          </button>
-          <button  className="text-white mx-2  bg-yellow-500 p-3 rounded-2xl">
-            Edit
-          </button>
-          <button className="text-white mx-2  bg-red-700 p-3 rounded-2xl">
-            Delete
-          </button>
-        </div>
-      ),
-    },
-  ];
+	const columns: TableColumn<ProductType>[] = [
+		{
+			name: "Product Title",
+			selector: (row) => row.title,
+		},
+		{
+			name: "Price (USD)",
+			selector: (row) => row.price,
+			sortable: true,
+		},
+		{
+			name: "Image",
+			selector: (row): any => (
+				<img className="w-16 h-16" src={row.image} alt={row.image} />
+			),
+			sortable: true,
+		},
+		{
+			name: "Category",
+			selector: (row) => row.category,
+			sortable: true,
+		},
+		{
+			name: "Action",
+			selector: (row): any => (
+				<div>
+					<button
+						onClick={() => handleViewProduct(row)}
+						className="text-blue-600 mx-2"
+					>
+						view
+					</button>
+					<button className="text-yellow-400 mx-2">edit</button>
+					<button className="text-red-600 mx-2">delete</button>
+				</div>
+			),
+		},
+	];
 
- 
-  return (
-    <main className="h-screen">
-      <DataTable
-        fixedHeader
-        progressPending={loading}
-        columns={columns}
-        data={products}
-        pagination
-        customStyles={customStyles}
-        striped
-        highlightOnHover
-      />
-      <Modal show={openModal} onClose={() => setOpenModal(false)}>
-        <Modal.Header>Product Details</Modal.Header>
-        <Modal.Body>
-          <div className="space-y-6">
-            <img src={productDetail?.image||ImagePlaceHolder} width={500} height={500} alt={productDetail?.name||"Untitle"} className="w-full h-96 object-fit" />
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              {productDetail?.description}
-            </p>
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-             {productDetail?.name}
-            </p>
-          </div>
-        </Modal.Body>
-      </Modal>
-      <DataTable progressPending={loading}	columns={columns} data={products} pagination persistTableHead/>
-    </main>
-   
-  );
+	return (
+		<main className="h-screen">
+			<DataTable
+				fixedHeader
+				progressPending={loading}
+				columns={columns}
+				data={products}
+				pagination
+				customStyles={customStyles}
+				striped
+				highlightOnHover
+			/>
+			<Modal show={openModal} onClose={() => setOpenModal(false)}>
+				<Modal.Header>Product Detial</Modal.Header>
+				<Modal.Body>
+					<div className="space-y-6">
+						<Image
+							src={productDetail?.image || imagePlaceholder}
+							alt={productDetail?.title || "Untitle"}
+							width={250}
+							height={300}
+						/>
+						<h3 className="text-3xl text-gray-700">{productDetail?.title || "Untitle"}</h3>
+						<p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+							{productDetail?.description || "No description"}
+						</p>
+						
+					</div>
+				</Modal.Body>
+			</Modal>
+		</main>
+	);
 }
+
 const customStyles = {
-  rows: {
-    style: {
-      minHeight: "72px", // override the row height
-    },
-  },
-  headCells: {
-    style: {
-      paddingLeft: "8px", // override the cell padding for head cells
-      paddingRight: "8px",
-      fontSize: "1.2rem",
-    },
-  },
-  cells: {
-    style: {
-      paddingLeft: "8px", // override the cell padding for data cells
-      paddingRight: "8px",
-    },
-  },
+	rows: {
+		style: {
+			minHeight: "72px", // override the row height
+		},
+	},
+	headCells: {
+		style: {
+			paddingLeft: "38px", // override the cell padding for head cells
+			paddingRight: "8px",
+			fontSize: "1.2rem",
+			backgroundColor: "#f1f1f1",
+		},
+	},
+	cells: {
+		style: {
+			paddingLeft: "38px", // override the cell padding for data cells
+			paddingRight: "8px",
+		},
+	},
 };

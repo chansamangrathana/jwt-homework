@@ -1,36 +1,47 @@
-import "@/app/globals.css";
-import NavbarComponent from "@/component/navbar/NavbarComponent";
-import FooterComponent from "@/component/footer/FooterComponent";
-import { Metadata } from "next";
-import Loading from "./loading";
 import { Suspense } from "react";
+import "@/app/globals.css";
+import NavbarComponent from "@/components/navbar/NavbarComponent";
+import Loading from "./loading";
+import Error from "./error";
+import { ErrorBoundary } from "next/dist/client/components/error-boundary";
+
+import { inter, suwannaphum, localCustomFont } from "./fonts";
+import { Metadata } from "next";
+import StoreProvider from "../StoreProvider";
+import SessionWrapper from "../SessionProvider";
 
 export const metadata: Metadata = {
-  title: "JINA Ecommerce Web",
-  description: "ISTAD Ecommerce Web is a web application for selling products.",
-  openGraph: {
-    title: "JINA Ecommerce Web",
-    description:
-      "JINA Ecommerce Web is a web application for selling products.",
-    images: "https://sokea.online/media/brand_images/photo.jpg",
-  },
+	title: "ISTAD Ecommerce Web",
+	description: "ISTAD Ecommerce Web is a web application for selling products.",
+	openGraph: {
+		title: "ISTAD Ecommerce Web",
+		description:
+			"ISTAD Ecommerce Web is a web application for selling products.",
+		images: "https://store.istad.co/media/brand_images/sokea_AF6QosU.jpg",
+	},
 };
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body className="h-screan flex flex-col justify-between w-full h-auto min-h-screen min-w-[300px] bg-pink-100">
-        <header>
-          <NavbarComponent />
-        </header>
-        <Suspense fallback={<Loading />}></Suspense>
-        <main className="flex-grow">{children}</main>
 
-        <FooterComponent />
-      </body>
-    </html>
-  );
+export default function RootLayout({
+	children,
+}: Readonly<{
+	children: React.ReactNode;
+}>) {
+	return (
+		<html lang="en">
+			<SessionWrapper>
+				<body
+					className={`${inter.variable} ${suwannaphum.variable} ${localCustomFont.variable}`}
+				>
+					<StoreProvider>
+						<header>
+							<NavbarComponent />
+						</header>
+						<ErrorBoundary errorComponent={Error}>
+							<Suspense fallback={<Loading />}>{children}</Suspense>
+						</ErrorBoundary>
+					</StoreProvider>
+				</body>
+			</SessionWrapper>
+		</html>
+	);
 }

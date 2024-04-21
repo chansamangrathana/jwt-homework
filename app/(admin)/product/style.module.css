@@ -1,5 +1,5 @@
 .container {
-	@apply grid place-content-center bg-slate-600;
+	@apply grid place-content-center bg-blue-600;
 }
 
 .title {
