@@ -1,9 +1,9 @@
 "use client";
 import CardProduct from "@/components/card/CardProduct";
 import { useSession } from "next-auth/react";
-
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { ENDPONT } from "@/lib/constants";
 
 const ENDPOINT = "https://fakestoreapi.com/products/";
 

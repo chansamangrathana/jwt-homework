@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import style from "./style.module.css";
 import { useState } from "react";
-import { BASE_URL, ACCESS_TOKEN } from "@/lib/constants";
+import { ENDPONT, ACCESS_TOKEN } from "@/lib/constants";
 
 type CatageoryType = {
 	name: string;
@@ -82,7 +82,7 @@ export default function Product() {
 		formData.append("name", name);
 		formData.append("image", file);
 
-		const rest = await fetch(`${BASE_URL}/api/file/${typeFile}/`, {
+		const rest = await fetch(`${ENDPONT}/api/file/${typeFile}/`, {
 			method: "POST",
 			headers: {
 				Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -95,7 +95,7 @@ export default function Product() {
 	};
 
 	const handleSubmitProudct = async (value: ProductPostType) => {
-		const res = await fetch(`${BASE_URL}/api/products/`, {
+		const res = await fetch(`${ENDPONT}/api/products/`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

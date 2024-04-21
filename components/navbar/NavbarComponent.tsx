@@ -26,29 +26,11 @@ export default function NavbarComponent() {
 	const pathname = usePathname();
 	const [menu, setMenu] = useState<MenuItem[]>(MenuList);
 
-	// const updateMenu = (path: string) => {
-	// 	const newMenu = menu.map((item) => {
-	// 		if(path=== item.path){
-	// 			return {
-	// 				...item,
-	// 				active: true
-	// 			}
-	// 		}else{
-	// 			return {
-	// 				...item,
-	// 				active: false
-	// 			}
-	// 		}
-	// 	})
-
-	// 	setMenu(newMenu)
-	// }
 
 	return (
 		<Navbar fluid rounded className="w-full">
 			<NavbarBrand as={Link} href="https://flowbite-react.com">
 				<img
-					src={avatar}
 					className="mr-3 h-6 sm:h-9"
 					alt="Flowbite React Logo"
 				/>
