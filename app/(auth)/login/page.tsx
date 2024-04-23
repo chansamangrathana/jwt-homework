@@ -20,8 +20,6 @@ const initialValues: ValueTypes = {
 	
 };
 
-const strongPasswordRegex = new RegExp("^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&*]).{8,}$");
-
 const validationSchema = Yup.object().shape({
 	email: Yup.string().email("Invalid email").required("Required"),
 	password: Yup.string().required("Required"),
