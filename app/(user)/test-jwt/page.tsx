@@ -36,8 +36,8 @@ export default function TestJWT() {
 			name: "casual wardrobe update1",
 		};
 
-		const res = await fetch(
-			`${process.env.NEXT_PUBLIC_DJANGO_API_URL}/api/products/${499}`,
+		const res = await 
+		fetch(`${process.env.NEXT_PUBLIC_DJANGO_API_URL}/api/products/${474}`,
 			{
 				method: "PATCH",
 				headers: {
@@ -72,13 +72,29 @@ export default function TestJWT() {
 				console.log(error);
 			});
 	};
+	// logout
+	const handleLogout = async () => {
+		fetch(process.env.NEXT_PUBLIC_API_URL + "/logout", {
+			method: "POST",
+			credentials: "include",
+			body: JSON.stringify({}),
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				console.log("Data from logout : ", data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}
+
 	
 	return (
 		<main className="h-screen grid place-content-center">
 			<h1 className="text-5xl ">TEST Handle Login</h1>
 			<button
 				onClick={handleLogin}
-				className="my-4 p-4 bg-blue-600 rounded-xl text-3xl text-gray-100"
+				className="my-4 p-4  bg-purple-800 rounded-xl text-3xl text-gray-100"
 			>
 				Login
 			</button>
@@ -95,7 +111,14 @@ export default function TestJWT() {
 				>
 					Refresh
 				</button>
+				
 			)}
+			<button
+					onClick={handleLogout}
+					className="my-4 p-4 bg-purple-800 rounded-xl text-3xl text-gray-100"
+				>
+					Logout
+				</button>
 			
 		</main>
 	);
